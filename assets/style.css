@@ -1,0 +1,176 @@
+:root {
+    --lime: #9eab05; /* rgba(158, 171, 5, 1) */
+    --charcoal: #424a52; /* rgba(66, 74, 82, 1) */
+    --pink: #d10373; /* rgba(209, 3, 115, 1) */
+    --purple: #6a2150; /* rgba(106, 33, 80, 1) */
+    --red: #c70540; /* rgba(199, 5, 64, 1) */
+    --yellow: #e3ba12; /* rgba(227, 186, 18, 1) */
+    --gold: #f49103; /* rgba(244, 145, 3, 1) */
+    --aqua: #0085a1; /* rgba(0, 133, 161, 1) */
+    --blue: #003896; /* rgba(0, 56, 150, 1) */
+    --green: #006338; /* rgba(0, 99, 56, 1) */
+    --midgrey: #adafaf; /* rgba(173, 175, 175, 1) */
+    --ltgrey: #f3f3f3; /* rgba(243, 243, 243, 1) */
+}
+
+/* Fonts */
+@font-face {
+    font-family: "Regular";
+    src: url("OpenSans-Regular.ttf");
+}
+@font-face {
+    font-family: "SemiBold";
+    src: url("OpenSans-SemiBold.ttf");
+}
+@font-face {
+    font-family: "ExtraBold";
+    src: url("OpenSans-ExtraBold.ttf");
+}
+
+body {
+    font-family: "Regular", sans-serif;
+    margin: 20px auto;
+    background-color: var(--ltgrey);
+}
+h1 {
+    font-family: "ExtraBold", sans-serif;
+    text-align: center;
+    padding: 20px;
+    margin: 0 auto;
+}
+h2 {
+    font-family: "SemiBold", sans-serif;
+    font-size: 28px;
+    padding: 10px
+}
+h3 {
+    font-family: "SemiBold", sans-serif;
+    font-size: 24px;
+    text-align: center;
+}
+p {
+    font-size: 16px;
+    margin: 0 auto;
+}
+/* Class name for bold text inside a paragraph using html.Span */
+.bold-p {
+    font-family: "SemiBold", sans-serif;
+}
+
+/* Tables */
+table {
+    margin: 0 auto;
+}
+td,
+th {
+    padding: 2px 5px;
+    font-family: "Regular", sans-serif;
+}
+td.right,
+th.right {
+    font-family: "SemiBold", sans-serif;
+    text-align: right;
+}
+
+/* Bootstrap */
+.container {
+    width: 100%
+}
+.row {
+    margin: 20px
+}
+.card {
+    margin: 10px;
+}
+/* Buttons */
+.button {
+    margin: 10px;
+    background-color: var(--blue);
+    font-size: 16px
+}
+.btn-primary:focus {
+    background-color: var(--blue);
+    box-shadow: 0 0 0 0.2rem rgba(0, 56, 150, 0.5);
+}
+/*  Descriptive statistics toggle - DIS */
+#collapse1, #collapse2 {
+    margin: 0 auto;
+    max-width: 420px;
+}
+
+/* Labels */
+.label {
+    margin: 5px;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+/* Input validation */
+input:invalid {
+    outline: solid var(--pink)
+}
+.Select-value-label {
+    font-size: 16px;
+}
+.invalid-feedback {
+    color: var(--pink);
+}
+.form-select.is-invalid {
+    border-color: var(--pink);
+}
+/* Graph key - DIS */
+.mean-key {
+    border-top: 3px solid var(--gold);
+    display: block;
+    width: 30px
+}
+.median-key {
+    border-top: 3px solid var(--green);
+    display: block;
+    width: 30px
+}
+.std-key {
+    border-top: 3px solid var(--aqua);
+    display: block;
+    width: 30px
+}
+.q1-key, .q3-key {
+    border-top: 3px solid var(--red);
+    display: block;
+    width: 30px
+}
+
+#graph-hist1, #graph-hist2, #graph-box1, #graph-box2 {
+    max-width: 600px
+}
+/* Screen reader alt text for graphs with role=img */
+.sr-only {
+    position: absolute;
+    left: -10000px;
+    top: auto;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+}
+
+/* Slider formatting */
+.rc-slider-track {
+    background-color: var(--blue);
+}
+.rc-slider-dot-active {
+    border-color: var(--blue);
+    border: solid 2px var(--blue);
+}
+.rc-slider-handle {
+    background-color: var(--blue);
+    border-color: var(--blue);
+}
+.rc-slider-handle:hover {
+    border-color: var(--blue);
+}
+.rc-slider-handle-active:active {
+    border-color: var(--blue);
+}
+.rc-slider-mark-text {
+    font-size: 14px;
+}
