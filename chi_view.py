@@ -40,7 +40,7 @@ app.layout = dbc.Container([
                            class_name="button",
                            style={"width": 150})
             ], className="d-flex justify-content-center")
-        ], xs=12, sm=6, md=3, lg=3, xl=3),
+        ], xs=12, sm=6, md=3),
         dbc.Col([
             html.P([
                 html.Span("P value: ", className="bold-p"),
@@ -53,7 +53,7 @@ app.layout = dbc.Container([
             html.Br(),
             html.P("Alternative hypothesis", className="bold-p"),
             html.P(id="alt-hyp"),
-        ], xs=12, sm=12, md=5, lg=5, xl=5),
+        ], xs=12, md=5),
         dbc.Col([
             html.H4("Conclusion"),
             html.P(
@@ -62,23 +62,22 @@ app.layout = dbc.Container([
                          options=[{"label": "Accept the null hypothesis",
                                    "value": "accept"},
                                   {"label": "Reject the null hypothesis",
-                                   "value": "reject"}
-                                  ],
+                                   "value": "reject"}],
                          value=None),
             html.Br(),
             html.P(id="conclusion95", children=[]),
+            html.Br(),
             html.P(
                 "What about at the 99% confidence level?", className="bold-p"),
             dcc.Dropdown(id="accept-reject99",
                          options=[{"label": "Accept the null hypothesis",
                                    "value": "accept"},
                                   {"label": "Reject the null hypothesis",
-                                   "value": "reject"}
-                                  ],
+                                   "value": "reject"}],
                          value=None),
             html.Br(),
             html.P(id="conclusion99", children=[])
-        ], xs=12, sm=6, md=4, lg=4, xl=4)
+        ], xs=12, sm=6, md=4)
     ]),
     dbc.Row([
         dbc.Col([
@@ -95,9 +94,8 @@ app.layout = dbc.Container([
                      children=[],
                      className="sr-only",
                      **{"aria-live": "polite"})
-        ], xs=12, sm=12, md=6, lg=6, xl=6),
+        ], xs=12, md=6),
         dbc.Col([
-            # html.H4("Results"),
             # html.P(children=[
             #     html.Span("Chi squared: ", className="bold-p"),
             #     html.Span(id="chi2")]),
@@ -112,6 +110,6 @@ app.layout = dbc.Container([
                 html.H5("Expected values"),
                 html.Div(id="table-expected", children=[]),
             ])
-        ], style={"padding-left": 30}, xs=12, sm=12, md=6, lg=6, xl=6)
+        ], style={"padding-left": 30}, xs=12, md=6)
     ])
 ], fluid=True)
