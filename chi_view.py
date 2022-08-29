@@ -46,37 +46,41 @@ app.layout = dbc.Container([
                 html.Span("P value: ", className="bold-p"),
                 html.Span(id="p-value"),
                 dcc.Store(id="p-store")
-            ]),
+            ], **{"aria-live": "polite"}),
             html.Br(),
             html.P("Null hypothesis", className="bold-p"),
-            html.P(id="null-hyp"),
+            html.P(id="null-hyp", **{"aria-live": "polite"}),
             html.Br(),
             html.P("Alternative hypothesis", className="bold-p"),
-            html.P(id="alt-hyp"),
+            html.P(id="alt-hyp", **{"aria-live": "polite"}),
         ], xs=12, md=5),
         dbc.Col([
             html.H4("Conclusion"),
-            html.P(
-                "Based on the results obtained, should you accept or reject the null hypothesis at the 95% confidence level?", className="bold-p"),
-            dcc.Dropdown(id="accept-reject95",
-                         options=[{"label": "Accept the null hypothesis",
-                                   "value": "accept"},
-                                  {"label": "Reject the null hypothesis",
-                                   "value": "reject"}],
-                         value=None),
+            dbc.Label("Based on the results obtained, should you accept or reject the null hypothesis at the 95% confidence level?",
+                      className="label",
+                      html_for="accept-reject95"),
+            dbc.Select(id="accept-reject95",
+                       options=[{"label": "Accept the null hypothesis",
+                                 "value": "accept"},
+                                {"label": "Reject the null hypothesis",
+                                 "value": "reject"}],
+                       value=None,
+                       disabled=True),
             html.Br(),
-            html.P(id="conclusion95", children=[]),
+            html.P(id="conclusion95", children=[], **{"aria-live": "polite"}),
             html.Br(),
-            html.P(
-                "What about at the 99% confidence level?", className="bold-p"),
-            dcc.Dropdown(id="accept-reject99",
-                         options=[{"label": "Accept the null hypothesis",
-                                   "value": "accept"},
-                                  {"label": "Reject the null hypothesis",
-                                   "value": "reject"}],
-                         value=None),
+            dbc.Label("What about at the 99% confidence level?",
+                      className="label",
+                      html_for="accept-reject99"),
+            dbc.Select(id="accept-reject99",
+                       options=[{"label": "Accept the null hypothesis",
+                                 "value": "accept"},
+                                {"label": "Reject the null hypothesis",
+                                 "value": "reject"}],
+                       value=None,
+                       disabled=True),
             html.Br(),
-            html.P(id="conclusion99", children=[])
+            html.P(id="conclusion99", children=[], **{"aria-live": "polite"})
         ], xs=12, sm=6, md=4)
     ]),
     dbc.Row([
@@ -96,10 +100,6 @@ app.layout = dbc.Container([
                      **{"aria-live": "polite"})
         ], xs=12, md=6),
         dbc.Col([
-            # html.P(children=[
-            #     html.Span("Chi squared: ", className="bold-p"),
-            #     html.Span(id="chi2")]),
-            # html.Br(),
             html.Div([
                 html.H5("Observed vs expected proportions"),
                 html.Div(id="table-observed-pc", children=[]),

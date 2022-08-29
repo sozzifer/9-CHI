@@ -8,18 +8,20 @@ from chi_model import calc_chi2_ind, stat_colours
 @app.callback(
     Output("graph", "figure"),
     Output("sr-bar", "children"),
+    Output("p-value", "children"),
     Output("p-store", "data"),
     Output("dependent", "invalid"),
     Input("submit", "n_clicks"),
     State("dependent", "value"),
-    State("independent", "value")
+    State("independent", "value"),
+    prevent_initial_call=True
 )
 def update_bar(n_clicks, dependent, independent):
     if n_clicks is None:
         raise exceptions.PreventUpdate
     else:
         if dependent == independent:
-            return no_update, no_update, no_update, True
+            return no_update, no_update, no_update, no_update, True
         else:
             _, _, ct_t, _, _, _, _, p, _, _ = calc_chi2_ind(
                 dependent, independent)
@@ -46,33 +48,31 @@ def update_bar(n_clicks, dependent, independent):
             fig.update_yaxes(title_text=f"Proportion ({dependent})",
                              range=[0,1])
             sr_text = f"Bar chart of dependent variable {dependent} for independent variable {independent}"
-        return fig, sr_text, p, False
-        # f"{chi2:.3f}"
+        return fig, sr_text, f"{p:.3f}", p, False
 
 
 @app.callback(
-    Output("p-value", "children"),
     Output("null-hyp", "children"),
     Output("alt-hyp", "children"),
-    # Output("chi2", "children"),
     Output("accept-reject95", "value"),
     Output("accept-reject99", "value"),
+    Output("accept-reject95", "disabled"),
+    Output("accept-reject99", "disabled"),
     Input("submit", "n_clicks"),
     State("dependent", "value"),
     State("independent", "value"),
-    State("p-store", "data"),
     prevent_initial_call=True
 )
-def update_results(n_clicks, dependent, independent, p):
+def update_results(n_clicks, dependent, independent):
     if n_clicks is None:
         raise exceptions.PreventUpdate
     else:
         if dependent == independent:
-            return no_update, no_update, no_update, no_update, no_update
+            return no_update, no_update, no_update, no_update, True, True
         else:
             null_hyp = f"The value of {dependent} does not depend on {independent} - there is no association between the variables"
             alt_hyp = f"The value of {dependent} does depend on {independent} - there is an association between the variables"
-            return f"{p:.3f}", null_hyp, alt_hyp, None, None
+            return null_hyp, alt_hyp, None, None, False, False
 
 
 @app.callback(
@@ -93,7 +93,7 @@ def update_datatables(n_clicks, dependent, independent):
             ct, ct_norm, _, ct_table, _, _, _, _, _, expected = calc_chi2_ind(
                 dependent, independent)
 
-            obs_df = ct.iloc[:-1, :]
+            obs_df = ct.iloc[:-1, :].copy()
             obs_df.rename(columns={"Expected": "Total"},
                         inplace=True)
             obs_df.sort_index(ascending=False, inplace=True)
