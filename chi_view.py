@@ -1,7 +1,8 @@
 from dash import Dash, html, dcc
 import dash_bootstrap_components as dbc
-from chi_model import chi_happy
+from chi_model import chi_happy, create_blank_fig
 
+# Specify HTML <head> elements
 app = Dash(__name__,
            title="Association of categorical variables",
            update_title=None,
@@ -9,9 +10,13 @@ app = Dash(__name__,
            meta_tags=[{"name": "viewport",
                        "content": "width=device-width, initial-scale=1.0, maximum-scale=1.0"}])
 
+# Specify app layout (HTML <body> elements) using dash.html, dash.dcc and dash_bootstrap_components
+# All component IDs should relate to the Input or Output of callback functions in *_controller.py
 app.layout = dbc.Container([
+    # Row - User Input, Results and Conclusion
     dbc.Row([
         dbc.Col([
+            html.H4("Variables"),
             html.Div([
                 dbc.Label("Dependent variable (y axis)",
                           className="label",
@@ -42,17 +47,20 @@ app.layout = dbc.Container([
             ], className="d-flex justify-content-center")
         ], xs=12, sm=6, md=3),
         dbc.Col([
-            html.P([
-                html.Span("P value: ", className="bold-p"),
-                html.Span(id="p-value"),
-                dcc.Store(id="p-store")
-            ], **{"aria-live": "polite"}),
-            html.Br(),
-            html.P("Null hypothesis", className="bold-p"),
-            html.P(id="null-hyp", **{"aria-live": "polite"}),
-            html.Br(),
-            html.P("Alternative hypothesis", className="bold-p"),
-            html.P(id="alt-hyp", **{"aria-live": "polite"}),
+            html.Div([
+                html.H4("Results"),
+                html.P([
+                    html.Span("P value: ", className="bold-p"),
+                    html.Span(id="p-value"),
+                    dcc.Store(id="p-store")
+                ], **{"aria-live": "polite"}),
+                html.Br(),
+                html.P("Null hypothesis", className="bold-p"),
+                html.P(id="null-hyp", **{"aria-live": "polite"}),
+                html.Br(),
+                html.P("Alternative hypothesis", className="bold-p"),
+                html.P(id="alt-hyp", **{"aria-live": "polite"})
+            ], id="results", style={"display": "none"})
         ], xs=12, md=5),
         dbc.Col([
             html.H4("Conclusion"),
@@ -83,19 +91,23 @@ app.layout = dbc.Container([
             html.P(id="conclusion99", children=[], **{"aria-live": "polite"})
         ], xs=12, sm=6, md=4)
     ]),
+    # Row - Graph and DataTables
     dbc.Row([
         dbc.Col([
+            # Graph components are placed inside a Div with role="img" to manage UX for screen reader users
             html.Div([
                 dcc.Graph(id="graph",
+                          figure=create_blank_fig(),
                           config={"displayModeBar": False,
                                   "doubleClick": False,
                                   "editable": False,
                                   "scrollZoom": False,
                                   "showAxisDragHandles": False})
-            ], role="img"),
+            ], role="img", **{"aria-hidden": "true"}),
             html.Br(),
+            # A second Div is used to associate alt text with the relevant Graph component to manage the experience for screen reader users, styled using CSS class sr-only
             html.Div(id="sr-bar",
-                     children=[],
+                     children=["Bar chart of dependent variable UK citizen for independent variable Sex"],
                      className="sr-only",
                      **{"aria-live": "polite"})
         ], xs=12, md=6),

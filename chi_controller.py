@@ -1,15 +1,19 @@
 from dash import html, Input, Output, State, exceptions, no_update, dash_table
-import plotly.graph_objects as go
 import pandas as pd
-from chi_view import app
+import plotly.graph_objects as go
 from chi_model import calc_chi2_ind, stat_colours
+from chi_view import app
 
 
+# Callback function to update bar chart, screen reader text and results based on user selection of dependent/independent variable
 @app.callback(
     Output("graph", "figure"),
     Output("sr-bar", "children"),
     Output("p-value", "children"),
     Output("p-store", "data"),
+    # Results hidden until callback triggered
+    Output("results", "style"),
+    # Input validation - dependent and independent variables must be different
     Output("dependent", "invalid"),
     Input("submit", "n_clicks"),
     State("dependent", "value"),
@@ -21,7 +25,7 @@ def update_bar(n_clicks, dependent, independent):
         raise exceptions.PreventUpdate
     else:
         if dependent == independent:
-            return no_update, no_update, no_update, no_update, True
+            return no_update, no_update, no_update, no_update, no_update, True
         else:
             _, _, ct_t, _, _, _, _, p, _, _ = calc_chi2_ind(
                 dependent, independent)
@@ -47,13 +51,16 @@ def update_bar(n_clicks, dependent, independent):
                              title_text=independent)
             fig.update_yaxes(title_text=f"Proportion ({dependent})",
                              range=[0,1])
+            # Screen reader text
             sr_text = f"Bar chart of dependent variable {dependent} for independent variable {independent}"
-        return fig, sr_text, f"{p:.3f}", p, False
+        return fig, sr_text, f"{p:.3f}", p, {"display": "inline"}, False
 
 
+# Callback function to generate natural language versions of null/alternative hypothesis and reset Conclusion section
 @app.callback(
     Output("null-hyp", "children"),
     Output("alt-hyp", "children"),
+    # Reset Conclusion section whenever callback triggered
     Output("accept-reject95", "value"),
     Output("accept-reject99", "value"),
     Output("accept-reject95", "disabled"),
@@ -75,13 +82,15 @@ def update_results(n_clicks, dependent, independent):
             return null_hyp, alt_hyp, None, None, False, False
 
 
+# Callback function to populate and format DataTables
 @app.callback(
     Output("table-observed", "children"),
     Output("table-expected", "children"),
     Output("table-observed-pc", "children"),
     Input("submit", "n_clicks"),
     State("dependent", "value"),
-    State("independent", "value")
+    State("independent", "value"),
+    prevent_initial_call=True
 )
 def update_datatables(n_clicks, dependent, independent):
     if n_clicks is None:
@@ -166,6 +175,7 @@ def update_datatables(n_clicks, dependent, independent):
             return table_obs, table_exp, table_obs_pc
 
 
+# Callback function to give feedback when user decides whether to accept/reject the null hypothesis based on the calculated p-value (95% confidence)
 @app.callback(
     Output("conclusion95", "children"),
     Input("accept-reject95", "value"),
@@ -197,6 +207,7 @@ def accept_or_reject95(accept_reject, p):
         return conclusion
 
 
+# Callback function to give feedback when user decides whether to accept/reject the null hypothesis based on the calculated p-value (99% confidence)
 @app.callback(
     Output("conclusion99", "children"),
     Input("accept-reject99", "value"),
@@ -229,5 +240,6 @@ def accept_or_reject99(accept_reject, p):
 
 
 if __name__ == "__main__":
-    # app.run(debug=False, host="0.0.0.0", port=8080, dev_tools_ui=False)
-    app.run(debug=True)
+    # app.run(debug=True)
+    # To deploy on Docker, replace app.run(debug=True) with the following:
+    app.run(debug=False, host="0.0.0.0", port=8080, dev_tools_ui=False)
