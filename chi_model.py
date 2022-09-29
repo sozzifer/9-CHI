@@ -78,21 +78,3 @@ def create_blank_fig():
     blank_fig.update_yaxes(title_text=f"Proportion (UK citizen)",
                            range=[0,1])
     return blank_fig
-
-# ct, ct_norm, ct_t, ct_table, dep_cat, ind_cat, chi2, p, dof, expected = calc_chi2_ind(
-#     "UK_citizen", "Sex")
-
-# Goodness of fit
-# expected = [20, 20, 20, 20, 20, 20]
-# observed = [25, 17, 15, 23, 24, 16]
-# chisq, p = stat.chisquare(observed, expected)
-# print(f"Chi squared: {chisq}")
-# print(f"P value: {p}")
-
-# obs_mendel = [315, 108, 101, 32]
-# ratios = [9, 3, 3, 1]
-# exp_mendel = []
-# print(len(ratios))
-# for i in range(len(obs_mendel)):
-#     exp_mendel.append(sum(obs_mendel)*(ratios[i]/sum(ratios)))
-# print(exp_mendel)
